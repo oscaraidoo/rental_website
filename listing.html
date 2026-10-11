@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rental details — Havenly Rentals</title>
+  <meta name="description" content="View rental details, monthly price, and contact the landlord.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.8V21h14V9.8"/><path d="M9.5 21v-6h5v6"/></svg>
+        Havenly
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="listings.html" aria-current="page">Browse rentals</a>
+        <a href="listings.html?favorites=1" class="fav-link">Favorites <span class="fav-count" data-fav-count style="display:none">0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section" id="main">
+    <div class="container">
+      <p><a href="listings.html">&larr; Back to all rentals</a></p>
+
+      <div id="detail-view" hidden>
+        <div class="detail-grid">
+          <div>
+            <div class="detail-media" id="media"></div>
+
+            <h1 class="detail-title" id="title"></h1>
+            <p class="text-muted" id="location" style="display:flex;align-items:center;gap:6px"></p>
+
+            <h2 style="font-size:18px;margin-top:24px">About this home</h2>
+            <p id="description"></p>
+
+            <h2 style="font-size:18px;margin-top:24px">Key facts</h2>
+            <dl class="detail-facts" id="facts"></dl>
+          </div>
+
+          <aside class="panel sidebar-sticky">
+            <div class="price" id="price"></div>
+            <p class="text-muted" style="margin:4px 0 16px">Available <span id="available"></span></p>
+
+            <button type="button" class="btn btn-outline btn-block" id="detail-fav">
+              <span id="fav-label">Save to favorites</span>
+            </button>
+
+            <h2 style="font-size:18px;margin:24px 0 12px">Contact the landlord</h2>
+            <form id="contact-form" novalidate>
+              <div class="field" style="margin-bottom:12px">
+                <label for="name">Your name</label>
+                <input type="text" id="name" autocomplete="name">
+                <span class="error-text">Please enter your name.</span>
+              </div>
+              <div class="field" style="margin-bottom:12px">
+                <label for="email">Email</label>
+                <input type="email" id="email" autocomplete="email">
+                <span class="error-text">Please enter a valid email address.</span>
+              </div>
+              <div class="field" style="margin-bottom:12px">
+                <label for="message">Message</label>
+                <textarea id="message" rows="4">Hi, I'm interested in this rental. Is it still available for a tour?</textarea>
+                <span class="error-text">Please add a short message.</span>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Request a tour</button>
+              <p class="status-msg status-info" id="form-status" aria-live="polite" style="display:none;margin:12px 0 0"></p>
+            </form>
+          </aside>
+        </div>
+      </div>
+
+      <div id="not-found" hidden>
+        <div class="empty-state">
+          <h3>We couldn't find that rental</h3>
+          <p>The listing may have been removed or the link may be incorrect.</p>
+          <a class="btn btn-primary mt-4" href="listings.html">Browse all rentals</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>&copy; 2026 Havenly Rentals</span>
+      <nav aria-label="Footer">
+        <a href="index.html">Home</a>
+        <a href="listings.html">Browse rentals</a>
+        <a href="mailto:support@havenly.example">Contact support</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const id = new URLSearchParams(location.search).get("id");
+    const item = LISTINGS.find(l => l.id === id);
+
+    if (!item) {
+      document.getElementById("not-found").hidden = false;
+    } else {
+      document.title = item.title + " — Havenly Rentals";
+      document.getElementById("detail-view").hidden = false;
+
+      document.getElementById("media").style.background = item.tint;
+      document.getElementById("media").textContent = item.type;
+
+      document.getElementById("title").textContent = item.title;
+      document.getElementById("location").innerHTML =
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>' +
+        item.neighborhood + ", " + item.city;
+      document.getElementById("description").textContent = item.description;
+
+      document.getElementById("price").innerHTML = formatPrice(item.price) + " <span>/ month</span>";
+      document.getElementById("available").textContent = formatDate(item.available);
+
+      document.getElementById("facts").innerHTML =
+        fact("Bedrooms", item.beds) +
+        fact("Bathrooms", item.baths) +
+        fact("Size", item.area.toLocaleString("en-US") + " sq ft") +
+        fact("Property type", item.type);
+
+      function fact(label, value) {
+        return '<div class="fact"><dt>' + label + "</dt><dd>" + value + "</dd></div>";
+      }
+
+      const favBtn = document.getElementById("detail-fav");
+      const favLabel = document.getElementById("fav-label");
+      function syncFav() {
+        const saved = isFavorite(item.id);
+        favLabel.textContent = saved ? "Saved to favorites" : "Save to favorites";
+        favBtn.querySelector("svg") && favBtn.querySelector("svg").remove();
+        const span = document.createElement("span");
+        span.innerHTML = favButtonSvg(saved);
+        favBtn.insertBefore(span.firstChild, favLabel);
+      }
+      syncFav();
+
+      favBtn.addEventListener("click", () => {
+        const added = toggleFavorite(item.id);
+        syncFav();
+        showToast(added ? "Saved this rental to your favorites." : "Removed this rental from your favorites.", added ? "success" : null);
+      });
+
+      // Contact form: validate, then always report the outcome
+      const form = document.getElementById("contact-form");
+      const status = document.getElementById("form-status");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const name = document.getElementById("name");
+        const email = document.getElementById("email");
+        const message = document.getElementById("message");
+        let valid = true;
+
+        const checks = [
+          [name, name.value.trim().length >= 2],
+          [email, /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())],
+          [message, message.value.trim().length >= 5]
+        ];
+
+        checks.forEach(([input, ok]) => {
+          input.closest(".field").classList.toggle("has-error", !ok);
+          if (!ok) valid = false;
+        });
+
+        if (!valid) {
+          status.className = "status-msg status-warning";
+          status.style.display = "flex";
+          status.textContent = "Please fix the highlighted fields and try again.";
+          showToast("Your message was not sent — check the form.", "error");
+          return;
+        }
+
+        status.className = "status-msg status-info";
+        status.style.display = "flex";
+        status.textContent = "Request sent! The landlord will reply to " + email.value.trim() + " within 1 business day.";
+        showToast("Tour request sent successfully.", "success");
+        form.querySelector("textarea").value = "Hi, I'm interested in this rental. Is it still available for a tour?";
+        checks.forEach(([input]) => input.closest(".field").classList.remove("has-error"));
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Havenly Rentals — Find your next home</title>
+  <meta name="description" content="Search verified rental listings, save your favorites, and message landlords directly.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.8V21h14V9.8"/><path d="M9.5 21v-6h5v6"/></svg>
+        Havenly
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="listings.html">Browse rentals</a>
+        <a href="listings.html?favorites=1" class="fav-link">Favorites <span class="fav-count" data-fav-count style="display:none">0</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Primary task first: search rentals -->
+    <section class="hero">
+      <div class="container">
+        <h1>Find a rental you'll love coming home to</h1>
+        <p>Verified listings, transparent monthly pricing, and direct messaging with landlords — no hidden fees.</p>
+        <form class="search-bar" action="listings.html" method="get" role="search" aria-label="Search rentals">
+          <div class="field">
+            <label for="q">What are you looking for?</label>
+            <input type="search" id="q" name="q" placeholder="City, neighborhood, or keyword">
+          </div>
+          <div class="field">
+            <label for="type">Property type</label>
+            <select id="type" name="type">
+              <option value="">Any type</option>
+              <option>Apartment</option>
+              <option>Studio</option>
+              <option>Loft</option>
+              <option>Condo</option>
+              <option>Townhouse</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="beds">Bedrooms</label>
+            <select id="beds" name="beds">
+              <option value="">Any</option>
+              <option value="1">1+</option>
+              <option value="2">2+</option>
+              <option value="3">3+</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="max">Max price / month</label>
+            <input type="number" id="max" name="max" min="0" step="50" placeholder="$4,000">
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Featured rentals</h2>
+            <p>Hand-picked homes available this month.</p>
+          </div>
+          <a href="listings.html">View all listings</a>
+        </div>
+        <div class="grid" id="featured-grid"></div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>How it works</h2>
+            <p>Three steps from browsing to move-in.</p>
+          </div>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon" aria-hidden="true">1</div>
+            <h3>Search &amp; filter</h3>
+            <p class="text-muted">Narrow listings by price, beds, and neighborhood. Every result shows the full monthly cost upfront.</p>
+          </div>
+          <div class="step">
+            <div class="step-icon" aria-hidden="true">2</div>
+            <h3>Schedule a tour</h3>
+            <p class="text-muted">Message the landlord directly and pick a time. You'll get a confirmation with tour details right away.</p>
+          </div>
+          <div class="step">
+            <div class="step-icon" aria-hidden="true">3</div>
+            <h3>Apply &amp; move in</h3>
+            <p class="text-muted">Submit your application online and track its status until the lease is signed.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>&copy; 2026 Havenly Rentals</span>
+      <nav aria-label="Footer">
+        <a href="listings.html">Browse rentals</a>
+        <a href="listings.html?favorites=1">Favorites</a>
+        <a href="mailto:support@havenly.example">Contact support</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    renderListings(document.getElementById("featured-grid"), LISTINGS.filter(l => l.featured));
+  </script>
+</body>
+</html>

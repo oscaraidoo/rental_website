@@ -1,0 +1,147 @@
+// Sample rental inventory. In a real app this would come from an API.
+const LISTINGS = [
+  {
+    id: "l1",
+    title: "Sunny 2-Bed Apartment near Central Park",
+    city: "New York",
+    neighborhood: "Upper West Side",
+    price: 2850,
+    beds: 2,
+    baths: 1,
+    area: 780,
+    type: "Apartment",
+    available: "2026-11-01",
+    rating: 4.8,
+    reviews: 126,
+    featured: true,
+    tint: "#1d4ed8",
+    description:
+      "A bright, recently renovated apartment with floor-to-ceiling windows, hardwood floors, and a remodeled kitchen. Two blocks from the park and the 1 train."
+  },
+  {
+    id: "l2",
+    title: "Modern Loft in the Arts District",
+    city: "Los Angeles",
+    neighborhood: "Arts District",
+    price: 3200,
+    beds: 1,
+    baths: 1,
+    area: 950,
+    type: "Loft",
+    available: "2026-10-15",
+    rating: 4.6,
+    reviews: 84,
+    featured: true,
+    tint: "#7c3aed",
+    description:
+      "Open-plan loft with exposed brick, 14-foot ceilings, and a private balcony. Walking distance to galleries, coffee shops, and the Metro A line."
+  },
+  {
+    id: "l3",
+    title: "Cozy Studio in Capitol Hill",
+    city: "Seattle",
+    neighborhood: "Capitol Hill",
+    price: 1650,
+    beds: 1,
+    baths: 1,
+    area: 520,
+    type: "Studio",
+    available: "2026-10-01",
+    rating: 4.4,
+    reviews: 57,
+    featured: true,
+    tint: "#0e7490",
+    description:
+      "Efficient studio with in-unit laundry and a shared rooftop garden. Quiet street, five minutes from light rail and Broadway shops."
+  },
+  {
+    id: "l4",
+    title: "Family Townhouse with Backyard",
+    city: "Austin",
+    neighborhood: "Hyde Park",
+    price: 4100,
+    beds: 3,
+    baths: 2,
+    area: 1450,
+    type: "Townhouse",
+    available: "2026-12-01",
+    rating: 4.9,
+    reviews: 41,
+    featured: true,
+    tint: "#15803d",
+    description:
+      "Three-bedroom townhouse with a fenced backyard, two-car garage, and updated bathrooms. Zoned for top-rated elementary schools."
+  },
+  {
+    id: "l5",
+    title: "Riverside 1-Bed with Skyline View",
+    city: "Chicago",
+    neighborhood: "River North",
+    price: 2250,
+    beds: 1,
+    baths: 1,
+    area: 690,
+    type: "Apartment",
+    available: "2026-11-15",
+    rating: 4.5,
+    reviews: 98,
+    featured: false,
+    tint: "#b45309",
+    description:
+      "Corner unit on the 22nd floor with floor-to-ceiling skyline views, in-unit laundry, and 24-hour door staff."
+  },
+  {
+    id: "l6",
+    title: "Garden Apartment near Campus",
+    city: "Boston",
+    neighborhood: "Allston",
+    price: 1950,
+    beds: 2,
+    baths: 1,
+    area: 820,
+    type: "Apartment",
+    available: "2026-09-20",
+    rating: 4.2,
+    reviews: 63,
+    featured: false,
+    tint: "#be185d",
+    description:
+      "Pet-friendly garden apartment with a private patio and heat and hot water included. One block from the B line."
+  },
+  {
+    id: "l7",
+    title: "Lakefront Condo with Parking",
+    city: "Miami",
+    neighborhood: "Brickell",
+    price: 3600,
+    beds: 2,
+    baths: 2,
+    area: 1080,
+    type: "Condo",
+    available: "2026-10-10",
+    rating: 4.7,
+    reviews: 112,
+    featured: false,
+    tint: "#0369a1",
+    description:
+      "Waterfront condo with two assigned parking spots, bay views from every room, and a pool and gym in the building."
+  },
+  {
+    id: "l8",
+    title: "Quiet Suburban 2-Bed with Garage",
+    city: "Denver",
+    neighborhood: "Washington Park",
+    price: 2150,
+    beds: 2,
+    baths: 1,
+    area: 900,
+    type: "Apartment",
+    available: "2026-11-01",
+    rating: 4.3,
+    reviews: 37,
+    featured: false,
+    tint: "#4d7c0f",
+    description:
+      "Second-floor unit overlooking Wash Park, with covered parking, on-site management, and coin-free in-unit laundry."
+  }
+];
