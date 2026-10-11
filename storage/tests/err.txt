@@ -1,0 +1,7 @@
+PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\rental_website\storage\tests\multichannel_notification_test.php on line 113
+PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\rental_website\storage\tests\multichannel_notification_test.php on line 114
+PHP Fatal error:  Uncaught TypeError: str_contains(): Argument #1 ($haystack) must be of type string, null given in C:\xampp\htdocs\rental_website\storage\tests\multichannel_notification_test.php:114
+Stack trace:
+#0 C:\xampp\htdocs\rental_website\storage\tests\multichannel_notification_test.php(114): str_contains(NULL, 'Villa')
+#1 {main}
+  thrown in C:\xampp\htdocs\rental_website\storage\tests\multichannel_notification_test.php on line 114

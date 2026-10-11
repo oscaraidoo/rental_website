@@ -1,0 +1,46 @@
+Options -Indexes
+Options -MultiViews
+
+RewriteEngine On
+
+# Route all requests through index.php
+# (HTTPS redirect handled in root .htaccess)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L,QSA]
+
+# ── Security headers ──────────────────────────────────────────
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# ── Block sensitive files ─────────────────────────────────────
+<FilesMatch "\.(env|sql|log|sh|bak|cfg|ini)$">
+    Require all denied
+</FilesMatch>
+<FilesMatch "^(install|fix|reset_admin|load_samples|add_samples)\.php$">
+    Require all denied
+</FilesMatch>
+
+# ── Cache static assets ───────────────────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg        "access plus 1 year"
+    ExpiresByType image/png         "access plus 1 year"
+    ExpiresByType image/webp        "access plus 1 year"
+    ExpiresByType image/gif         "access plus 1 year"
+    ExpiresByType image/svg+xml     "access plus 1 year"
+    ExpiresByType text/css          "access plus 6 months"
+    ExpiresByType text/javascript   "access plus 6 months"
+    ExpiresByType application/javascript "access plus 6 months"
+</IfModule>
+
+# ── Compress responses ────────────────────────────────────────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>

@@ -1,0 +1,26 @@
+/* ── Admin extras — inherits from app.css green palette ── */
+
+/* Verification checklist */
+.verify-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0; border-bottom: 1px solid var(--border); gap: 16px;
+}
+.verify-item:last-child { border-bottom: none; }
+.verify-item label  { font-size: 13px; font-weight: 500; color: var(--c-darkest); cursor: pointer; flex: 1; }
+.verify-item input[type="checkbox"] {
+    width: 18px; height: 18px; border: 1.5px solid var(--border-dark);
+    border-radius: 4px; cursor: pointer; flex-shrink: 0;
+    accent-color: var(--c-primary);
+}
+
+/* Page heading */
+.page-head { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+.page-head h1 { font-size: 22px; font-weight: 800; letter-spacing: -.03em; color: var(--c-darkest); }
+.page-head p  { font-size: 13px; color: var(--muted); font-weight: 500; margin: 0; }
+
+/* App breadcrumb */
+.app-breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.app-breadcrumb a { color: var(--muted); text-decoration: none; font-weight: 500; }
+.app-breadcrumb a:hover { color: var(--c-primary); }
+.app-breadcrumb span { color: var(--border-dark); }
+.app-breadcrumb .current { color: var(--c-darkest); font-weight: 600; }

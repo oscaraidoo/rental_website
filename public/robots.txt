@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /renter/
+Disallow: /auth/
+Disallow: /api/
+Sitemap: https://rent.habellesfoundation.org/sitemap.xml

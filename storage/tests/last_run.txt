@@ -1,0 +1,39 @@
+PASS — render substitutes vars
+PASS — render strips unresolved placeholders
+PASS — has() knows known type
+PASS — has() rejects unknown type
+PASS — valid E164 accepted
+PASS — invalid E164 rejected
+PASS — normalise local 0-prefix
+PASS — normalise +233 stays
+PASS — normalise garbage returns null
+PASS — email provider rejects invalid address
+PASS — email provider (log driver) succeeds
+PASS — sms provider rejects non-E164
+PASS — sms provider (log driver) succeeds
+PASS — default prefs all enabled
+PASS — phone auto-normalised from users.phone
+PASS — invalid phone update rejected
+PASS — prefs update ok
+PASS — email toggle persisted
+PASS — muted list persisted + bogus filtered
+PASS — disabled email channel skipped
+PASS — email send logged with id
+PASS — row status sent (log driver)
+PASS — row channel + recipient correct
+PASS — duplicate send skipped (idempotency)
+FAIL — muted type skipped
+PASS — unknown type returns nulls safely
+PASS — unknown type failure logged
+FAIL — both channels dispatched
+
+Warning: Trying to access array offset on value of type null in C:\xampp\htdocs\rental_website\storage\tests\multichannel_notification_test.php on line 113
+FAIL — sms row uses normalised phone
+
+Warning: Trying to access array offset on value of type null in C:\xampp\htdocs\rental_website\storage\tests\multichannel_notification_test.php on line 114
+
+Fatal error: Uncaught TypeError: str_contains(): Argument #1 ($haystack) must be of type string, null given in C:\xampp\htdocs\rental_website\storage\tests\multichannel_notification_test.php:114
+Stack trace:
+#0 C:\xampp\htdocs\rental_website\storage\tests\multichannel_notification_test.php(114): str_contains(NULL, 'Villa')
+#1 {main}
+  thrown in C:\xampp\htdocs\rental_website\storage\tests\multichannel_notification_test.php on line 114

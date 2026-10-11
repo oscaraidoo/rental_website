@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email — RentalWebsite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+        :root{
+            --darkest:#051F20;--dark:#0B2B26;--primary:#235347;
+            --sage:#8EB69B;--mint:#DAF1DE;--white:#ffffff;
+            --border:#c8e2cf;--light:#f0f9f2;--muted:#5a7a6e;
+        }
+
+        body{
+            font-family:'Inter',system-ui,sans-serif;
+            min-height:100vh;display:flex;align-items:center;
+            justify-content:center;position:relative;
+            overflow:hidden;-webkit-font-smoothing:antialiased;
+        }
+
+        /* Full-screen background — same treatment as sign in / sign up */
+        .bg{position:fixed;inset:0;z-index:0}
+        .bg img{width:100%;height:100%;object-fit:cover}
+        .bg-overlay{position:absolute;inset:0;background:rgba(0,0,0,.32)}
+
+        .brand{position:fixed;top:26px;left:36px;z-index:10;
+               font-size:17px;font-weight:800;color:#fff;
+               letter-spacing:-.03em;text-decoration:none}
+        .tagline{position:fixed;bottom:28px;left:36px;z-index:10;
+                 font-size:13px;font-weight:500;color:rgba(255,255,255,.75);letter-spacing:-.01em}
+
+        /* Card */
+        .card{
+            position:relative;z-index:10;
+            background:var(--white);
+            border-radius:20px;
+            padding:44px 48px;
+            width:100%;max-width:420px;margin:24px;
+            box-shadow:0 28px 80px rgba(5,31,32,.4);
+            border:1.5px solid var(--border);
+            text-align:center;
+        }
+
+        /* Envelope badge — brand-tinted instead of bare emoji */
+        .icon{
+            width:64px;height:64px;margin:0 auto 22px;
+            border-radius:18px;
+            background:var(--light);
+            border:1.5px solid var(--border);
+            display:flex;align-items:center;justify-content:center;
+        }
+        .icon svg{display:block}
+
+        h1{font-size:22px;font-weight:800;color:var(--darkest);letter-spacing:-.04em;margin-bottom:6px}
+        .sub{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.65}
+        .sub .email{
+            display:inline-block;max-width:100%;
+            padding:0 8px;border-radius:6px;
+            background:var(--light);border:1px solid var(--border);
+            color:var(--primary);font-weight:700;
+            overflow-wrap:anywhere;
+        }
+
+        /* Step chips: 1 Email → 2 Verify → 3 Done */
+        .steps{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:24px}
+        .step{width:26px;height:26px;border-radius:50%;
+              display:flex;align-items:center;justify-content:center;
+              font-size:11px;font-weight:700;
+              background:var(--light);border:1.5px solid var(--border);color:var(--sage)}
+        .step.done{background:var(--primary);border-color:var(--primary);color:#fff}
+        .step-line{width:22px;height:1.5px;background:var(--border)}
+        .step-label{font-size:10px;font-weight:600;color:var(--sage);
+                    text-transform:uppercase;letter-spacing:.06em;margin-top:5px}
+
+        .btn{
+            display:flex;align-items:center;justify-content:center;gap:8px;
+            width:100%;background:var(--primary);color:#fff;border:none;border-radius:8px;
+            padding:13px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;
+            cursor:pointer;transition:background .15s;letter-spacing:-.01em;
+        }
+        .btn:hover{background:#163832}
+
+        .divider{display:flex;align-items:center;gap:12px;margin:18px 0 14px;color:var(--sage);
+                 font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+        .divider::before,.divider::after{content:'';flex:1;height:1.5px;background:var(--border)}
+
+        /* Collapsible resend form */
+        .resend{display:none;margin-top:4px}
+        .resend.open{display:block}
+        .resend input[type="email"]{
+            width:100%;background:var(--light);border:1.5px solid var(--border);
+            border-radius:8px;padding:12px 14px;font-size:14px;font-family:'Inter',sans-serif;
+            color:var(--darkest);outline:none;transition:border-color .15s;margin-bottom:10px;
+        }
+        .resend input::placeholder{color:var(--sage);opacity:.6}
+        .resend input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(35,83,71,.1)}
+
+        .alert{padding:11px 14px;border-radius:8px;font-size:13px;margin-bottom:18px;line-height:1.5;text-align:left}
+        .alert-success{background:#f0fdf4;border:1.5px solid #bbf7d0;color:#166534}
+        .alert-warning{background:#fffbeb;border:1.5px solid #fde68a;color:#92400e}
+        .alert-danger {background:#fef2f2;border:1.5px solid #fecaca;color:#991b1b}
+        .alert-info   {background:var(--light);border:1.5px solid var(--border);color:var(--primary)}
+
+        .links{margin-top:18px;font-size:13px;line-height:2}
+        .links a{color:var(--muted);text-decoration:none;font-weight:500}
+        .links a:hover{color:var(--primary)}
+
+        @media(max-width:480px){.card{padding:32px 22px;margin:16px}.brand,.tagline{display:none}}
+    </style>
+</head>
+<body>
+
+<div class="bg">
+    <img src="https://images.unsplash.com/photo-1560185127-6ed189bf02f4?w=1600&q=80&auto=format&fit=crop" alt="">
+    <div class="bg-overlay"></div>
+</div>
+
+<a href="http://localhost/rental_website/public" class="brand">RentalWebsite</a>
+<p class="tagline">See it. Understand it. Then decide.</p>
+
+<div class="card">
+    <div class="icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2.5" y="5" width="19" height="14" rx="3" stroke="#235347" stroke-width="1.8"/>
+            <path d="M3.5 7.5 12 13l8.5-5.5" stroke="#235347" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <h1>Check your email</h1>
+    <p class="sub">
+        We sent a verification link
+                    to <span class="email">perftest_local@example.com</span>.
+                Click the link in the email to activate your account — the link expires in 24 hours.
+    </p>
+
+    <div class="steps" aria-hidden="true">
+        <div>
+            <div class="step done">✓</div>
+            <div class="step-label">Email</div>
+        </div>
+        <div class="step-line"></div>
+        <div>
+            <div class="step">2</div>
+            <div class="step-label">Verify</div>
+        </div>
+        <div class="step-line"></div>
+        <div>
+            <div class="step">3</div>
+            <div class="step-label">Done</div>
+        </div>
+    </div>
+
+        <div class="alert alert-warning">Your account was created, but the verification email could not be sent right now. Please use the resend option in a few minutes.</div>
+    
+    <button type="button" class="btn" onclick="document.getElementById('resend').classList.toggle('open');this.querySelector('.chev').textContent=document.getElementById('resend').classList.contains('open')?'−':'+'">
+        <span>Didn&rsquo;t get the email? Resend it</span><span class="chev">+</span>
+    </button>
+
+    <div class="resend" id="resend">
+        <div class="divider"><span>resend to</span></div>
+        <form method="POST" action="http://localhost/rental_website/public/auth/resend-verification">
+            <input type="hidden" name="_csrf_token" value="35ea81a23b0d90199766a8bc30ba6e69fea84280a196eeab273c7dbecbe6eb85">
+            <input type="email" name="email" value="perftest_local@example.com" placeholder="you@example.com" required autocomplete="email">
+            <button type="submit" class="btn" style="background:var(--light);color:var(--primary);border:1.5px solid var(--border)">
+                Resend verification link
+            </button>
+        </form>
+        <p class="step-label" style="margin-top:10px">Wrong address? It can&rsquo;t be changed yet — sign up again</p>
+    </div>
+
+    <div class="links">
+        <a href="http://localhost/rental_website/public/auth/login">Back to sign in</a><br>
+        <a href="http://localhost/rental_website/public">Go to homepage</a>
+    </div>
+</div>
+</body>
+</html>

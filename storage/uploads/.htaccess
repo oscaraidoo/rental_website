@@ -1,0 +1,14 @@
+# Allow image/video/pdf access but block PHP execution in uploads
+Options -Indexes
+
+# Block PHP execution
+<FilesMatch "\.(php|php3|php4|php5|phtml|pl|py|jsp|asp|htm|shtml|sh|cgi)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Allow media types only
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|mp4|webm|ogv|pdf)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>

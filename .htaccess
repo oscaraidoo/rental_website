@@ -1,0 +1,31 @@
+Options -Indexes
+RewriteEngine On
+
+# ══ LOCALHOST ══════════════════════════════════════════════════
+# Forward into the /rental_website/public/ subdirectory
+RewriteCond %{HTTP_HOST} ^localhost$ [NC]
+RewriteCond %{REQUEST_URI} !^/rental_website/public/
+RewriteRule ^(.*)$ /rental_website/public/$1 [L,R=302,QSA]
+
+# ══ PRODUCTION (any host other than localhost) ═════════════════
+
+# 1. Force HTTPS — also handles reverse proxy (X-Forwarded-Proto)
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 2. Serve real static files inside public/ directly
+#    e.g. /assets/css/app.css → public/assets/css/app.css
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
+RewriteRule ^(.*)$ public/$1 [L,QSA]
+
+# 3. Serve real directories inside public/ directly
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -d
+RewriteRule ^(.*)$ public/$1 [L,QSA]
+
+# 4. Everything else → public/index.php (the front controller)
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteRule ^ public/index.php [L,QSA]
